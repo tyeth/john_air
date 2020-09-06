@@ -19,7 +19,6 @@ Example sketch to connect to PM2.5 sensor with either I2C or UART.
 # pylint: disable=unused-import
 
 from RPi import GPIO
-GPIO.setmode(GPIO.BOARD)
 from RPLCD.gpio import CharLCD
 
 import time
@@ -41,7 +40,7 @@ pin_ppm25   =3
 pin_ppm10   =4
 pin_aqi25   =5
 
-lcd = CharLCD(cols=16, rows=2, pin_rs=8, pin_e=10, pins_data=[12, 16, 18, 22], numbering_mode=GPIO.BOARD) 
+lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], numbering_mode=GPIO.BCM) 
 i2c=None
 lcd=None
 sensor=None
