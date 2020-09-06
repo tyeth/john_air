@@ -42,7 +42,6 @@ pin_aqi25   =5
 
 lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], numbering_mode=GPIO.BCM) 
 i2c=None
-lcd=None
 sensor=None
 uart=None
 pm25=None
@@ -76,8 +75,9 @@ def buildStatusMessageAndDisplay():
     updateLCD("Temp: %s %s%%RH\nPPM2.5: %s" % (temp,humidity,ppm25))
 
 def updateLCD(newString):
+    global lcdString
+    global lcd
     print("UpdateLCD called with %s" % newString)
-    global lcdString,lcd
     if(newString==lcdString): return
     print("Updating LCD from %s to %s" % (lcdString,newString))
     lcdString = newString
