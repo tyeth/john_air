@@ -72,7 +72,7 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
         print("Failed", identifier)
 
 def buildStatusMessageAndDisplay():
-    updateLCD("Temp: %0.1f %0.1f%%RH\nPPM2.5: %0.1f" % (temp,humidity,ppm25))
+    updateLCD("Temp: %0.1f %0.1f%%RH PPM2.5: %0.1f" % (temp,humidity,ppm25))
 
 def updateLCD(newString):
     global lcdString
@@ -82,6 +82,7 @@ def updateLCD(newString):
         return
     print("Updating LCD from %s to %s" % (lcdString,newString))
     lcdString = newString
+    lcd.clear()
     lcd.write_string(lcdString)
 
 
