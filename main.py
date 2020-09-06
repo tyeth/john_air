@@ -83,50 +83,36 @@ def doTemperatureHumidityReading():
     print("Humidity: %0.1f %%" % sensor.relative_humidity)
 
 
-def main():
-        
+try:
+    print("Loading Si7021 Temp/Humidity Sensor")
+    # Create library object using our Bus I2C port
+    i2c = busio.I2C(board.SCL, board.SDA)
+    sensor = adafruit_si7021.SI7021(i2c)
 
-    try:
-        print("Loading Si7021 Temp/Humidity Sensor")
-        # Create library object using our Bus I2C port
-        i2c = busio.I2C(board.SCL, board.SDA)
-        sensor = adafruit_si7021.SI7021(i2c)
+    print("Found Si7021 sensor, reading data...")
+    doTemperatureHumidityReading()
+except Exception as e:
+    print("failed to load si7021")
+    print(e)
+    time.sleep(0.5)
 
-        print("Found Si7021 sensor, reading data...")
-        doTemperatureHumidityReading()
-    except Exception as e:
-        print("failed to load si7021")
-        print(e)
-        time.sleep(0.5)
+reset_pin = None
 
-    reset_pin = None
+try:
+    # Connect to a PM2.5 sensor over UART
+    uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=0.25)
+    pm25 = adafruit_pm25.PM25_UART(uart, reset_pin)
 
-    try:
-        pass
-    except expression as identifier:
-        pass
-    else:
-        pass
-    finally:
-        pass
-
-    try:
-        # Connect to a PM2.5 sensor over UART
-        uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=0.25)
-        pm25 = adafruit_pm25.PM25_UART(uart, reset_pin)
-
-        print("Found PM2.5 sensor, reading data...")
-        doPmReading()
-    except:
-        print("PM Sensor error")
+    print("Found PM2.5 sensor, reading data...")
+    doPmReading()
+except:
+    print("PM Sensor error")
 
 
-    while True:
-        doPmReading()
-        doTemperatureHumidityReading()
-        time.sleep(2)
+while True:
+    doPmReading()
+    doTemperatureHumidityReading()
+    time.sleep(2)
 
 
-if __name__ == "__main__":
-    main()
 
