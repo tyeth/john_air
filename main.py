@@ -30,6 +30,7 @@ import adafruit_pm25
 import adafruit_si7021
 
 from RPi import GPIO
+GPIO.setmode(GPIO.BOARD)
 from RPLCD.gpio import CharLCD
 
 pin_TEMP    =0
