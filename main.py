@@ -48,6 +48,10 @@ currentValues=None
 lcdString=None
 
 def doPmReading(pm25):
+    if(pm25==None):
+        print("No PM Sensor!")
+        return -1
+    
     time.sleep(1)
 
     try:
@@ -78,6 +82,9 @@ def doPmReading(pm25):
         print("Unable to read from sensor, retrying on next round...")
 
 def doTemperatureHumidityReading(sensor):
+    if(sensor==None):
+        print("No Temp/Humidity Sensor!")
+        return -1
     time.sleep(1)
     print("\nTemperature: %0.1f C" % sensor.temperature)
     print("Humidity: %0.1f %%" % sensor.relative_humidity)
