@@ -52,7 +52,7 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
     global blynk
     global BLYNK_AUTH
     try:
-        blynk = blynklib.Blynk(BLYNK_AUTH)
+        if(blynk==None): blynk = blynklib.Blynk(BLYNK_AUTH)
     except:
         print("Failed to login to blynk, check auth key")
         return
@@ -60,6 +60,7 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
     try:
         print("Updating Blynk VPin:%s Attr:%s Value:%s" % (virtualPin,attribute,updatedValue))
         blynk.virtual_write(virtualPin,updatedValue)
+        blynk.run()
     except Exception as identifier:
         print("Failed", e)
 
