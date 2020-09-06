@@ -94,11 +94,21 @@ def main():
 
         print("Found Si7021 sensor, reading data...")
         doTemperatureHumidityReading()
-    except:
+    except Exception as e:
         print("failed to load si7021")
+        print(e)
         time.sleep(0.5)
 
     reset_pin = None
+
+    try:
+        pass
+    except expression as identifier:
+        pass
+    else:
+        pass
+    finally:
+        pass
 
     try:
         # Connect to a PM2.5 sensor over UART
