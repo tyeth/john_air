@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """
 This script should give status message on boot then goto logging mode
 
