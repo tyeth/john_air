@@ -28,6 +28,12 @@ from digitalio import DigitalInOut, Direction, Pull
 import adafruit_pm25
 import adafruit_si7021
 
+pin_TEMP="v0"
+pin_HUMIDITY="v1"
+pin_ppm25="v3"
+pin_ppm10="v4"
+pin_aqi25="v5"
+
 i2c=None
 lcd=None
 sensor=None
@@ -35,6 +41,30 @@ uart=None
 pm25=None
 currentValues=None
 lcdString=None
+blynk = None
+ppm25=None
+temp=None
+humidity=None
+
+BLYNK_AUTH = '6pCMihwTj9roRtnn-cxkYJkd23iFXr64'
+
+def updateBlynk(virtualPin,updatedValue, attribute='color',login=False):
+    global blynk
+    if(blynk==None):
+        try:
+            blynk = blynklib.Blynk(BLYNK_AUTH)
+        except:
+            if(login==False):
+                updateBlynk(virtualPin,updatedValue,attribute,login=True)
+            else:
+                print("Failed to login to blynk, check auth key")
+                return
+
+    print("Updating Blynk VPin:%s Attr:%s Value:%s" % (virtualPin,attribute,updatedValue))
+    blynk.set_property(virtualPin,attribute,updatedValue)
+
+def buildStatusMessageAndDisplay():
+    updateLCD("Temp: %s %s%RH\nPPM2.5: %s" % (temp,humidity,ppm25))
 
 def updateLCD(newString):
     print("UpdateLCD called with %s" % newString)
@@ -43,7 +73,6 @@ def updateLCD(newString):
     print("Updating LCD from %s to %s" % (lcdString,newString))
     lcdString = newString
     lcd.clear()
-    lcd.cursor_pos(0)
     lcd.write_string(lcdString)
 
 
@@ -59,6 +88,7 @@ def diskSpace():
     time.sleep(2)
 
 def doPmReading(pm25):
+    global ppm25
     if(pm25==None):
         print("No PM Sensor!")
         return -1
@@ -94,9 +124,12 @@ def doPmReading(pm25):
 
     try:
         print("Updating blynk with PPM...")
-        blynk.set_property(pin_PM25,'color', getHexColor(aqdata) )
-    except expression as identifier:
-        pass
+        ppm25=aqdata["pm25 standard"]
+        aqi25 = calcAQIpm25(ppm25)
+        updateBlynk(pin_ppm25, ppm25)
+        updateBlynk(pin_aqi25, aqi25)
+    except:
+        print("failed to update blynk with ppm")
 
 def  calcAQIpm10(pm10):
 	pm1 = 0
@@ -139,6 +172,7 @@ def  calcAQIpm10(pm10):
 
 
 	# https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf 
+
 def getColor(aqi) :
     color=None
     if (aqi < 50):
@@ -157,7 +191,6 @@ def getColor(aqi) :
         color = "black"
     
 	return {"bg": color, "text": "white" if (aqi > 200) else "black"} 
-
 
 def calcAQIpm25(pm25):
     pm1 = 0
@@ -200,12 +233,17 @@ def calcAQIpm25(pm25):
 	return aqipm25.toFixed(0)
 
 def doTemperatureHumidityReading(sensor):
+    global temp, humidity
     if(sensor==None):
         print("No Temp/Humidity Sensor!")
         return -1
     time.sleep(1)
-    print("\nTemperature: %0.1f C" % sensor.temperature)
-    print("Humidity: %0.1f %%" % sensor.relative_humidity)
+    temp=sensor.temperature
+    print("\nTemperature: %0.1f C" % temp)
+    updateBlynk(pin_TEMP,temp)
+    humidity=sensor.relative_humidity
+    print("Humidity: %0.1f %%" % humidity)
+    updateBlynk(pin_HUMIDITY,humidity)
 
 
 try:
@@ -237,6 +275,7 @@ except:
 while True:
     doPmReading(pm25)
     doTemperatureHumidityReading(sensor)
+    updateLCD()
     time.sleep(2)
 
 
