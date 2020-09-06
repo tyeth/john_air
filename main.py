@@ -48,17 +48,13 @@ humidity=None
 
 BLYNK_AUTH = '6pCMihwTj9roRtnn-cxkYJkd23iFXr64'
 
-def updateBlynk(virtualPin,updatedValue, attribute='color',login=False):
+def updateBlynk(virtualPin,updatedValue, attribute='color'):
     global blynk
-    if(blynk==None):
-        try:
-            blynk = blynklib.Blynk(BLYNK_AUTH)
-        except:
-            if(login==False):
-                updateBlynk(virtualPin,updatedValue,attribute,login=True)
-            else:
-                print("Failed to login to blynk, check auth key")
-                return
+    try:
+        blynk = blynklib.Blynk(BLYNK_AUTH)
+    except:
+        print("Failed to login to blynk, check auth key")
+        return
 
     print("Updating Blynk VPin:%s Attr:%s Value:%s" % (virtualPin,attribute,updatedValue))
     blynk.set_property(virtualPin,attribute,updatedValue)
@@ -276,6 +272,7 @@ while True:
     doPmReading(pm25)
     doTemperatureHumidityReading(sensor)
     updateLCD()
+    if(not blynk==None): blynk.run()
     time.sleep(2)
 
 
