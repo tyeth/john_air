@@ -132,46 +132,46 @@ def doPmReading(pm25):
         print("failed to update blynk with ppm")
 
 def  calcAQIpm10(pm10):
-	pm1 = 0
-	pm2 = 54
-	pm3 = 154
-	pm4 = 254
-	pm5 = 354
-	pm6 = 424
-	pm7 = 504
-	pm8 = 604
-	aqi1 = 0
-	aqi2 = 50
-	aqi3 = 100
-	aqi4 = 150
-	aqi5 = 200
-	aqi6 = 300
-	aqi7 = 400
-	aqi8 = 500
-	aqipm10 = 0
+    pm1 = 0
+    pm2 = 54
+    pm3 = 154
+    pm4 = 254
+    pm5 = 354
+    pm6 = 424
+    pm7 = 504
+    pm8 = 604
+    aqi1 = 0
+    aqi2 = 50
+    aqi3 = 100
+    aqi4 = 150
+    aqi5 = 200
+    aqi6 = 300
+    aqi7 = 400
+    aqi8 = 500
+    aqipm10 = 0
 
-	if (pm10 >= pm1 & pm10 <= pm2) :
-		aqipm10 = ((aqi2 - aqi1) / (pm2 - pm1)) * (pm10 - pm1) + aqi1
-	elif (pm10 >= pm2 & pm10 <= pm3) :
-		aqipm10 = ((aqi3 - aqi2) / (pm3 - pm2)) * (pm10 - pm2) + aqi2
-	elif (pm10 >= pm3 & pm10 <= pm4) :
-		aqipm10 = ((aqi4 - aqi3) / (pm4 - pm3)) * (pm10 - pm3) + aqi3
-	elif (pm10 >= pm4 & pm10 <= pm5) :
-		aqipm10 = ((aqi5 - aqi4) / (pm5 - pm4)) * (pm10 - pm4) + aqi4
-	elif (pm10 >= pm5 & pm10 <= pm6) :
-		aqipm10 = ((aqi6 - aqi5) / (pm6 - pm5)) * (pm10 - pm5) + aqi5
-	elif (pm10 >= pm6 & pm10 <= pm7): 
-		aqipm10 = ((aqi7 - aqi6) / (pm7 - pm6)) * (pm10 - pm6) + aqi6
-	elif (pm10 >= pm7 & pm10 <= pm8) :
-		aqipm10 = ((aqi8 - aqi7) / (pm8 - pm7)) * (pm10 - pm7) + aqi7
-	elif (pm10 > pm8) :
-		aqipm10 = 500
-	
-	return aqipm10.toFixed(0)
+    if (pm10 >= pm1 & pm10 <= pm2) :
+        aqipm10 = ((aqi2 - aqi1) / (pm2 - pm1)) * (pm10 - pm1) + aqi1
+    elif (pm10 >= pm2 & pm10 <= pm3) :
+        aqipm10 = ((aqi3 - aqi2) / (pm3 - pm2)) * (pm10 - pm2) + aqi2
+    elif (pm10 >= pm3 & pm10 <= pm4) :
+        aqipm10 = ((aqi4 - aqi3) / (pm4 - pm3)) * (pm10 - pm3) + aqi3
+    elif (pm10 >= pm4 & pm10 <= pm5) :
+        aqipm10 = ((aqi5 - aqi4) / (pm5 - pm4)) * (pm10 - pm4) + aqi4
+    elif (pm10 >= pm5 & pm10 <= pm6) :
+        aqipm10 = ((aqi6 - aqi5) / (pm6 - pm5)) * (pm10 - pm5) + aqi5
+    elif (pm10 >= pm6 & pm10 <= pm7): 
+        aqipm10 = ((aqi7 - aqi6) / (pm7 - pm6)) * (pm10 - pm6) + aqi6
+    elif (pm10 >= pm7 & pm10 <= pm8) :
+        aqipm10 = ((aqi8 - aqi7) / (pm8 - pm7)) * (pm10 - pm7) + aqi7
+    elif (pm10 > pm8) :
+        aqipm10 = 500
+    
+    return aqipm10.toFixed(0)
 
 
 
-	# https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf 
+    # https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf 
 
 def getColor(aqi) :
     color=None
@@ -190,7 +190,7 @@ def getColor(aqi) :
     else:
         color = "black"
     
-	return {"bg": color, "text": "white" if (aqi > 200) else "black"} 
+    return {"bg": color, "text": "white" if (aqi > 200) else "black"} 
 
 def calcAQIpm25(pm25):
     pm1 = 0
@@ -230,7 +230,7 @@ def calcAQIpm25(pm25):
     elif (pm25 > pm8):
         aqipm25 = 500
 
-	return aqipm25.toFixed(0)
+    return aqipm25.toFixed(0)
 
 def doTemperatureHumidityReading(sensor):
     global temp, humidity
