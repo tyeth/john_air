@@ -48,9 +48,9 @@ pm25=None
 currentValues=None
 lcdString=None
 blynk = None
-ppm25=None
-temp=None
-humidity=None
+ppm25=-1
+temp=-99
+humidity=-1
 
 BLYNK_AUTH = '6pCMihwTj9roRtnn-cxkYJkd23iFXr64'
 blynk = blynklib.Blynk(BLYNK_AUTH)
