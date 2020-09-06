@@ -78,10 +78,11 @@ def updateLCD(newString):
     global lcdString
     global lcd
     print("UpdateLCD called with %s" % newString)
-    if(newString==lcdString): return
+    if(newString==lcdString):
+        return
     print("Updating LCD from %s to %s" % (lcdString,newString))
     lcdString = newString
-    lcd.write_string(lcdString.encode(encoding="utf8"))
+    lcd.write_string(lcdString)
 
 
 def diskSpace():
@@ -255,7 +256,7 @@ def doTemperatureHumidityReading(sensor):
     updateBlynk(pin_TEMP,temp)
     updateBlynk(pin_HUMIDITY,humidity)
 
-
+diskSpace()
 try:
     print("Loading Si7021 Temp/Humidity Sensor")
     # Create library object using our Bus I2C port
