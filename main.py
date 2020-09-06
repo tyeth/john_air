@@ -83,18 +83,15 @@ def doTemperatureHumidityReading():
     print("Humidity: %0.1f %%" % sensor.relative_humidity)
 
 
-try:
-    print("Loading Si7021 Temp/Humidity Sensor")
-    # Create library object using our Bus I2C port
-    i2c = busio.I2C(board.SCL, board.SDA)
-    sensor = adafruit_si7021.SI7021(i2c)
 
-    print("Found Si7021 sensor, reading data...")
-    doTemperatureHumidityReading()
-except Exception as e:
-    print("failed to load si7021")
-    print(e)
-    time.sleep(0.5)
+print("Loading Si7021 Temp/Humidity Sensor")
+# Create library object using our Bus I2C port
+i2c = busio.I2C(board.SCL, board.SDA)
+sensor = adafruit_si7021.SI7021(i2c)
+
+print("Found Si7021 sensor, reading data...")
+doTemperatureHumidityReading()
+time.sleep(0.5)
 
 reset_pin = None
 
