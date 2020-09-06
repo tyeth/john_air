@@ -16,8 +16,12 @@ sudo raspi-config nonint do_i2c 0
 ############
 Example sketch to connect to PM2.5 sensor with either I2C or UART.
 """
-
 # pylint: disable=unused-import
+
+from RPi import GPIO
+GPIO.setmode(GPIO.BOARD)
+from RPLCD.gpio import CharLCD
+
 import time
 import subprocess
 import blynklib
@@ -29,9 +33,7 @@ from digitalio import DigitalInOut, Direction, Pull
 import adafruit_pm25
 import adafruit_si7021
 
-from RPi import GPIO
-GPIO.setmode(GPIO.BOARD)
-from RPLCD.gpio import CharLCD
+
 
 pin_TEMP    =0
 pin_HUMIDITY=1
