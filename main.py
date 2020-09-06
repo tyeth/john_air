@@ -97,7 +97,8 @@ def diskSpace():
     updateLCD(outString)
     time.sleep(2)
 
-def doPmReading(pm25):
+def doPmReading():
+    global pm25
     global ppm25
     if(pm25==None):
         print("No PM Sensor!")
@@ -242,9 +243,10 @@ def calcAQIpm25(pm25):
 
     return aqipm25.toFixed(0)
 
-def doTemperatureHumidityReading(sensor):
+def doTemperatureHumidityReading():
     global temp
     global humidity
+    global sensor
     if(sensor==None):
         print("No Temp/Humidity Sensor!")
         return -1
@@ -265,7 +267,7 @@ try:
     sensor = adafruit_si7021.SI7021(i2c)
 
     print("Found Si7021 sensor, reading data...")
-    doTemperatureHumidityReading(sensor)
+    doTemperatureHumidityReading()
 except Exception as e:
     print("failed to load si7021")
     print(e)
@@ -279,14 +281,14 @@ try:
     pm25 = adafruit_pm25.PM25_UART(uart, reset_pin)
 
     print("Found PM2.5 sensor, reading data...")
-    doPmReading(pm25)
+    doPmReading()
 except Exception as e:
     print("PM Sensor error", e)
 
 
 while True:
-    doPmReading(pm25)
-    doTemperatureHumidityReading(sensor)
+    doPmReading()
+    doTemperatureHumidityReading()
     buildStatusMessageAndDisplay()
     if(not blynk==None): blynk.run()
     time.sleep(2)
