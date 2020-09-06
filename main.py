@@ -38,7 +38,7 @@ pin_ppm25   =3
 pin_ppm10   =4
 pin_aqi25   =5
 
-lcd = CharLCD(cols=16, rows=2, pin_rs=40, pin_e=38, pins_data=[12, 16, 18, 22], numbering_mode=GPIO.BOARD, compat_mode=True) 
+lcd = CharLCD(cols=16, rows=2, pin_rs=8, pin_e=10, pins_data=[12, 16, 18, 22], numbering_mode=GPIO.BOARD, compat_mode=True) 
 i2c=None
 lcd=None
 sensor=None

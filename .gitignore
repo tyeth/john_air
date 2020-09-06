@@ -128,3 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 BLYNK.py
+Lc.py
+lcd_16x2.py
