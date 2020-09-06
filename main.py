@@ -47,7 +47,8 @@ temp=None
 humidity=None
 
 BLYNK_AUTH = '6pCMihwTj9roRtnn-cxkYJkd23iFXr64'
-
+blynk = blynklib.Blynk(BLYNK_AUTH)
+blynk.run()
 def updateBlynk(virtualPin,updatedValue, attribute='color'):
     global blynk
     global BLYNK_AUTH
@@ -278,7 +279,7 @@ except:
 while True:
     doPmReading(pm25)
     doTemperatureHumidityReading(sensor)
-    updateLCD()
+    buildStatusMessageAndDisplay()
     if(not blynk==None): blynk.run()
     time.sleep(2)
 
