@@ -8,7 +8,7 @@ df -h / | tail -n1 | xargs | cut -d" " -f4
 using si7021,sds011, jhd162a lcd
 adafruit circuitpython libraries
 
-sudo pip3 install adafruit-circuitpython-pm25 adafruit-circuitpython-si7021
+sudo pip3 install adafruit-circuitpython-pm25 adafruit-circuitpython-si7021 RPLCD
 
 ############
 Example sketch to connect to PM2.5 sensor with either I2C or UART.
@@ -29,42 +29,22 @@ process = subprocess.Popen(['df', '-h', '/'],
                      universal_newlines=True)
 stdout, stderr = process.communicate()
 disk_free = stdout.split('\n')[1].split()[3]
-print (disk_free)
-
+print ("Free Space:\n" % disk_free)
+time.sleep(2)
 # Create library object using our Bus I2C port
 i2c = busio.I2C(board.SCL, board.SDA)
 sensor = adafruit_si7021.SI7021(i2c)
 
+print("Found Si7021 sensor, reading data...")
+print("\nTemperature: %0.1f C" % sensor.temperature)
+print("Humidity: %0.1f %%" % sensor.relative_humidity)
+time.sleep(0.5)
 reset_pin = None
-# If you have a GPIO, its not a bad idea to connect it to the RESET pin
-# reset_pin = DigitalInOut(board.G0)
-# reset_pin.direction = Direction.OUTPUT
-# reset_pin.value = False
-
-
-# For use with a computer running Windows:
-# import serial
-# uart = serial.Serial("COM30", baudrate=9600, timeout=1)
-
-# For use with microcontroller board:
-# (Connect the sensor TX pin to the board/computer RX pin)
-# uart = busio.UART(board.TX, board.RX, baudrate=9600)
-
-# For use with Raspberry Pi/Linux:
-# import serial
-# uart = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=0.25)
-
-# For use with USB-to-serial cable:
-import serial
-uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=0.25)
 
 # Connect to a PM2.5 sensor over UART
+import serial
+uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=0.25)
 pm25 = adafruit_pm25.PM25_UART(uart, reset_pin)
-
-# Create library object, use 'slow' 100KHz frequency!
-# i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
-# Connect to a PM2.5 sensor over I2C
-# pm25 = adafruit_pm25.PM25_I2C(i2c, reset_pin)
 
 print("Found PM2.5 sensor, reading data...")
 
