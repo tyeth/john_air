@@ -21,6 +21,7 @@ Example sketch to connect to PM2.5 sensor with either I2C or UART.
 import time
 import subprocess
 import blynklib
+
 import board
 import busio
 import serial
@@ -28,12 +29,16 @@ from digitalio import DigitalInOut, Direction, Pull
 import adafruit_pm25
 import adafruit_si7021
 
+from RPi import GPIO
+from RPLCD.gpio import CharLCD
+
 pin_TEMP    =0
 pin_HUMIDITY=1
 pin_ppm25   =3
 pin_ppm10   =4
 pin_aqi25   =5
 
+lcd = CharLCD(cols=16, rows=2, pin_rs=40, pin_e=38, pins_data=[12, 16, 18, 22], numbering_mode=GPIO.BOARD, compat_mode=True) 
 i2c=None
 lcd=None
 sensor=None
@@ -66,7 +71,7 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
         print("Failed", identifier)
 
 def buildStatusMessageAndDisplay():
-    updateLCD("Temp: %s %s%RH\nPPM2.5: %s" % (temp,humidity,ppm25))
+    updateLCD("Temp: %s %s%%RH\nPPM2.5: %s" % (temp,humidity,ppm25))
 
 def updateLCD(newString):
     print("UpdateLCD called with %s" % newString)
@@ -75,7 +80,7 @@ def updateLCD(newString):
     print("Updating LCD from %s to %s" % (lcdString,newString))
     lcdString = newString
     lcd.clear()
-    lcd.write_string(lcdString)
+    lcd.write_string(str.encode(lcdString,encoding="utf8"))
 
 
 def diskSpace():
