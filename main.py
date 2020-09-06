@@ -49,15 +49,19 @@ humidity=None
 BLYNK_AUTH = '6pCMihwTj9roRtnn-cxkYJkd23iFXr64'
 
 def updateBlynk(virtualPin,updatedValue, attribute='color'):
-    global blynk,BLYNK_AUTH
+    global blynk
+    global BLYNK_AUTH
     try:
         blynk = blynklib.Blynk(BLYNK_AUTH)
     except:
         print("Failed to login to blynk, check auth key")
         return
 
-    print("Updating Blynk VPin:%s Attr:%s Value:%s" % (virtualPin,attribute,updatedValue))
-    blynk.virtual_write(virtualPin,updatedValue)
+    try:
+        print("Updating Blynk VPin:%s Attr:%s Value:%s" % (virtualPin,attribute,updatedValue))
+        blynk.virtual_write(virtualPin,updatedValue)
+    except Exception as identifier:
+        print("Failed", e)
 
 def buildStatusMessageAndDisplay():
     updateLCD("Temp: %s %s%RH\nPPM2.5: %s" % (temp,humidity,ppm25))
