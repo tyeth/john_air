@@ -62,7 +62,7 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
         blynk.virtual_write(virtualPin,updatedValue)
         blynk.run()
     except Exception as identifier:
-        print("Failed", e)
+        print("Failed", identifier)
 
 def buildStatusMessageAndDisplay():
     updateLCD("Temp: %s %s%RH\nPPM2.5: %s" % (temp,humidity,ppm25))
@@ -234,7 +234,8 @@ def calcAQIpm25(pm25):
     return aqipm25.toFixed(0)
 
 def doTemperatureHumidityReading(sensor):
-    global temp, humidity
+    global temp
+    global humidity
     if(sensor==None):
         print("No Temp/Humidity Sensor!")
         return -1
