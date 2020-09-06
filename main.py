@@ -49,7 +49,7 @@ humidity=None
 BLYNK_AUTH = '6pCMihwTj9roRtnn-cxkYJkd23iFXr64'
 
 def updateBlynk(virtualPin,updatedValue, attribute='color'):
-    global blynk
+    global blynk,BLYNK_AUTH
     try:
         blynk = blynklib.Blynk(BLYNK_AUTH)
     except:
