@@ -28,11 +28,11 @@ from digitalio import DigitalInOut, Direction, Pull
 import adafruit_pm25
 import adafruit_si7021
 
-pin_TEMP="v0"
-pin_HUMIDITY="v1"
-pin_ppm25="v3"
-pin_ppm10="v4"
-pin_aqi25="v5"
+pin_TEMP    =0
+pin_HUMIDITY=1
+pin_ppm25   =3
+pin_ppm10   =4
+pin_aqi25   =5
 
 i2c=None
 lcd=None
@@ -57,7 +57,7 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
         return
 
     print("Updating Blynk VPin:%s Attr:%s Value:%s" % (virtualPin,attribute,updatedValue))
-    blynk.set_property(virtualPin,attribute,updatedValue)
+    blynk.virtual_write(virtualPin,updatedValue)
 
 def buildStatusMessageAndDisplay():
     updateLCD("Temp: %s %s%RH\nPPM2.5: %s" % (temp,humidity,ppm25))
@@ -235,10 +235,11 @@ def doTemperatureHumidityReading(sensor):
         return -1
     time.sleep(1)
     temp=sensor.temperature
-    print("\nTemperature: %0.1f C" % temp)
-    updateBlynk(pin_TEMP,temp)
+    print("Temperature: %0.1f C" % temp)
     humidity=sensor.relative_humidity
     print("Humidity: %0.1f %%" % humidity)
+    print("Updating blynk with temperature & humidity")
+    updateBlynk(pin_TEMP,temp)
     updateBlynk(pin_HUMIDITY,humidity)
 
 
