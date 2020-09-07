@@ -105,6 +105,10 @@ def diskSpace():
     updateLCD(outString)
     time.sleep(2)
 
+def writeToFile():
+    with open("data.csv","w+") as f:
+        f.write("%0.3f,%0.3f,%0.1f,%0.1f,%s" % (temp,humidity,ppm25,ppm10, time.strftime("%Y-%m-%d %H:%M:%S")))
+
 def doPmReading():
     global ppm25
     global ppm10
@@ -123,6 +127,22 @@ def doPmReading():
     except Exception as e:
         print("failed to update blynk with ppm")
         print(e)
+
+def doTemperatureHumidityReading():
+    global temp
+    global humidity
+    global sensor
+    if(sensor==None):
+        print("No Temp/Humidity Sensor!")
+        return -1
+    time.sleep(1)
+    temp=sensor.temperature
+    print("Temperature: %0.1f C" % temp)
+    humidity=sensor.relative_humidity
+    print("Humidity: %0.1f %%" % humidity)
+    print("Updating blynk with temperature & humidity")
+    updateBlynk(pin_TEMP,temp)
+    updateBlynk(pin_HUMIDITY,humidity)
 
 def  calcAQIpm10(pm10):
     pm1 = 0
@@ -225,22 +245,6 @@ def calcAQIpm25(pm25):
 
     return format(aqipm25, ".2f") #.toFixed(0)
 
-def doTemperatureHumidityReading():
-    global temp
-    global humidity
-    global sensor
-    if(sensor==None):
-        print("No Temp/Humidity Sensor!")
-        return -1
-    time.sleep(1)
-    temp=sensor.temperature
-    print("Temperature: %0.1f C" % temp)
-    humidity=sensor.relative_humidity
-    print("Humidity: %0.1f %%" % humidity)
-    print("Updating blynk with temperature & humidity")
-    updateBlynk(pin_TEMP,temp)
-    updateBlynk(pin_HUMIDITY,humidity)
-
 diskSpace()
 displayDateAndTime()
 try:
@@ -270,6 +274,7 @@ while True:
     displayDateAndTime(r"   %Y-%m-%d       %H:%M:%S >PS")
     doTemperatureHumidityReading()
     buildStatusMessageAndDisplay()
+    writeToFile()
     if(not blynk==None): blynk.run()
     time.sleep(5)
 
