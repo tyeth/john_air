@@ -108,14 +108,17 @@ def doPmReading():
     global ppm25
     global ppm10
     ppm25,ppm10 = aqi_py3_win.cmd_query_data()
-    
+    aqi25 = calcAQIpm25(ppm25)
     try:
-        print("Updating blynk with PPM...")
-        aqi25 = calcAQIpm25(ppm25)
+        print("Updating blynk with PPM 2.5...")
         updateBlynk(pin_ppm25, ppm25)
+        print("Updating blynk with PPM 10...")
+        updateBlynk(pin_ppm25, ppm25)
+        print("Updating blynk with AQI...")
         updateBlynk(pin_aqi25, aqi25)
-    except:
+    except Exception as e:
         print("failed to update blynk with ppm")
+        print(e)
 
 def  calcAQIpm10(pm10):
     pm1 = 0
