@@ -276,7 +276,6 @@ try:
 except Exception as e:
     print("failed to load si7021")
     print(e)
-    time.sleep(0.5)
 
 reset_pin = None
 
@@ -294,6 +293,7 @@ except Exception as e:
 while True:
     displayDateAndTime()
     doPmReading()
+    displayDateAndTime()
     doTemperatureHumidityReading()
     buildStatusMessageAndDisplay()
     if(not blynk==None): blynk.run()
