@@ -9,7 +9,7 @@ df -h / | tail -n1 | xargs | cut -d" " -f4
 using i2c si7021,usb->uart sds011, 4bit-mode jhd162a lcd
 relies on adafruit circuitpython libraries
 
-sudo pip3 install adafruit-circuitpython-pm25 adafruit-circuitpython-si7021 RPLCD
+sudo pip3 install adafruit-circuitpython-si7021 RPLCD
 sudo raspi-config nonint do_i2c 0
 
 
@@ -31,7 +31,6 @@ import board
 import busio
 import serial
 from digitalio import DigitalInOut, Direction, Pull
-import adafruit_pm25
 import adafruit_si7021
 
 
@@ -45,8 +44,6 @@ pin_aqi25   =5
 lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], numbering_mode=GPIO.BCM) 
 i2c=None
 sensor=None
-uart=None
-pm25=None
 currentValues=None
 lcdString=None
 blynk = None
@@ -254,11 +251,7 @@ except Exception as e:
 reset_pin = None
 
 try:
-    # Connect to a PM2.5 sensor over UART
-    uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=0.25)
-    pm25 = adafruit_pm25.PM25_UART(uart, reset_pin)
-
-    print("Found PM2.5 sensor, reading data...")
+    print("Now PPM2.5 sensor, reading data...")
     doPmReading()
 except Exception as e:
     print("PM Sensor error", e)
