@@ -51,6 +51,7 @@ currentValues=None
 lcdString=None
 blynk = None
 ppm25=-1
+ppm10=-1
 temp=-99
 humidity=-1
 
@@ -107,45 +108,12 @@ def diskSpace():
     time.sleep(2)
 
 def doPmReading():
-    global pm25
     global ppm25
-    print(aqi_py3_win.cmd_query_data())
-    if(pm25==None):
-        print("No PM Sensor!")
-        return -1
+    global ppm10
+    ppm25,ppm10 = aqi_py3_win.cmd_query_data()
     
-    time.sleep(1)
-
-    try:
-        aqdata = pm25.read()
-        # print(aqdata)
-        print()
-        print("Concentration Units (standard)")
-        print("---------------------------------------")
-        print(
-            "PM 1.0: %d\tPM2.5: %d\tPM10: %d"
-            % (aqdata["pm10 standard"], aqdata["pm25 standard"], aqdata["pm100 standard"])
-        )
-        print("Concentration Units (environmental)")
-        print("---------------------------------------")
-        print(
-            "PM 1.0: %d\tPM2.5: %d\tPM10: %d"
-            % (aqdata["pm10 env"], aqdata["pm25 env"], aqdata["pm100 env"])
-        )
-        print("---------------------------------------")
-        print("Particles > 0.3um / 0.1L air:", aqdata["particles 03um"])
-        print("Particles > 0.5um / 0.1L air:", aqdata["particles 05um"])
-        print("Particles > 1.0um / 0.1L air:", aqdata["particles 10um"])
-        print("Particles > 2.5um / 0.1L air:", aqdata["particles 25um"])
-        print("Particles > 5.0um / 0.1L air:", aqdata["particles 50um"])
-        print("Particles > 10 um / 0.1L air:", aqdata["particles 100um"])
-        print("---------------------------------------")
-    except RuntimeError:
-        print("Unable to read from sensor, retrying on next round...")
-
     try:
         print("Updating blynk with PPM...")
-        ppm25=aqdata["pm25 standard"]
         aqi25 = calcAQIpm25(ppm25)
         updateBlynk(pin_ppm25, ppm25)
         updateBlynk(pin_aqi25, aqi25)
