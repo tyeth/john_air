@@ -40,6 +40,7 @@ pin_HUMIDITY=1
 pin_ppm25   =2
 pin_ppm10   =3
 pin_aqi25   =4
+pin_aqi10   =5
 
 lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], numbering_mode=GPIO.BCM) 
 i2c=None
@@ -109,18 +110,22 @@ def doPmReading():
     global ppm10
     ppm25,ppm10 = aqi_py3_win.cmd_query_data()
     aqi25 = calcAQIpm25(ppm25)
+    aqi10 = calcAQIpm10(ppm10)
     try:
         print("Updating blynk with PPM 2.5...")
         updateBlynk(pin_ppm25, ppm25)
         print("Updating blynk with PPM 10...")
         updateBlynk(pin_ppm25, ppm25)
-        print("Updating blynk with AQI...")
+        print("Updating blynk with AQI 2.5...")
         updateBlynk(pin_aqi25, aqi25)
+        print("Updating blynk with AQI 10...")
+        updateBlynk(pin_aqi10, aqi10)
     except Exception as e:
         print("failed to update blynk with ppm")
         print(e)
 
 def  calcAQIpm10(pm10):
+    pm10 = int(pm10)
     pm1 = 0
     pm2 = 54
     pm3 = 154
@@ -182,8 +187,8 @@ def getColor(aqi) :
     return {"bg": color, "text": "white" if (aqi > 200) else "black"} 
 
 def calcAQIpm25(pm25):
-    pm1 = 0
-    pm2 = 12
+    pm1 = 0.0
+    pm2 = 12.0
     pm3 = 35.4
     pm4 = 55.4
     pm5 = 150.4
@@ -191,14 +196,14 @@ def calcAQIpm25(pm25):
     pm7 = 350.4
     pm8 = 500.4
 
-    aqi1 = 0
-    aqi2 = 50
-    aqi3 = 100
-    aqi4 = 150
-    aqi5 = 200
-    aqi6 = 300
-    aqi7 = 400
-    aqi8 = 500
+    aqi1 = 0.0
+    aqi2 = 50.0
+    aqi3 = 100.0
+    aqi4 = 150.0
+    aqi5 = 200.0
+    aqi6 = 300.0
+    aqi7 = 400.0
+    aqi8 = 500.0
 
     aqipm25 = 0
 
