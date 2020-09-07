@@ -298,5 +298,4 @@ while True:
     if(not blynk==None): blynk.run()
     time.sleep(2)
     displayDateAndTime()
-    time.sleep(0.5)
 
