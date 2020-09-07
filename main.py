@@ -75,7 +75,7 @@ def buildStatusMessageAndDisplay():
     updateLCD("T: %0.1f H:%0.1f%% PPM2.5: %0.1f" % (temp,humidity,ppm25))
 
 def displayDateAndTime():
-    updateLCD(time.strftime("now"))
+    updateLCD(time.strftime("   %Y-%m-%d\n    %H:%M:%S"))
     time.sleep(0.5)
 
 def updateLCD(newString):
@@ -297,6 +297,6 @@ while True:
     buildStatusMessageAndDisplay()
     if(not blynk==None): blynk.run()
     time.sleep(2)
-
-
+    displayDateAndTime()
+    time.sleep(0.5)
 
