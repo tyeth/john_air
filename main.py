@@ -25,6 +25,8 @@ import time
 import subprocess
 import blynklib
 
+import aqi_py3_win
+
 import board
 import busio
 import serial
@@ -107,6 +109,7 @@ def diskSpace():
 def doPmReading():
     global pm25
     global ppm25
+    print(aqi_py3_win.cmd_query_data())
     if(pm25==None):
         print("No PM Sensor!")
         return -1

@@ -114,6 +114,10 @@ def pub_mqtt(jsonrow):
     with subprocess.Popen(cmd, shell=False, bufsize=0, stdin=subprocess.PIPE).stdin as f:
         json.dump(jsonrow, f)
 
+def init():
+    cmd_set_sleep(0)
+    cmd_set_working_period(PERIOD_CONTINUOUS)
+    cmd_set_mode(MODE_QUERY)
 
 if __name__ == "__main__":
     cmd_set_sleep(0)
