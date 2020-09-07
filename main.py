@@ -72,7 +72,11 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
         print("Failed", identifier)
 
 def buildStatusMessageAndDisplay():
-    updateLCD("Temp: %0.1f %0.1f%%RH PPM2.5: %0.1f" % (temp,humidity,ppm25))
+    updateLCD("T: %0.1f H:%0.1f%% PPM2.5: %0.1f" % (temp,humidity,ppm25))
+
+def displayDateAndTime():
+    updateLCD(time.strftime("now"))
+    time.sleep(0.5)
 
 def updateLCD(newString):
     global lcdString
@@ -260,6 +264,7 @@ def doTemperatureHumidityReading():
     updateBlynk(pin_HUMIDITY,humidity)
 
 diskSpace()
+displayDateAndTime()
 try:
     print("Loading Si7021 Temp/Humidity Sensor")
     # Create library object using our Bus I2C port

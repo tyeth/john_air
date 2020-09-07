@@ -22,7 +22,7 @@ MQTT_HOST = ''
 MQTT_TOPIC = '/weather/particulatematter'
 
 ser = serial.Serial()
-ser.port = "COM6"#"/dev/ttyUSB0"
+ser.port = "/dev/ttyUSB0"
 ser.baudrate = 9600
 
 
