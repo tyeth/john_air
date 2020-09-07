@@ -72,7 +72,10 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
         print("Failed", identifier)
 
 def buildStatusMessageAndDisplay():
-    updateLCD("T: %0.1f H:%0.1f%% PPM2.5: %0.1f" % (temp,humidity,ppm25))
+    global blynk
+    formatString = "T: %0.1f H:%0.1f%% PPM2.5: %0.1f"
+    if(not blynk==None): formatString = "T: %0.1f" + chr(223) + "C H:%0f%% PPM2.5: %0.1f " + chr(165)
+    updateLCD(formatString % (temp,humidity,ppm25))
 
 def displayDateAndTime(formatTime=r"   %Y-%m-%d       %H:%M:%S"):
     updateLCD(time.strftime(formatTime))
