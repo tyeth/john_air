@@ -75,7 +75,7 @@ def buildStatusMessageAndDisplay():
     updateLCD("T: %0.1f H:%0.1f%% PPM2.5: %0.1f" % (temp,humidity,ppm25))
 
 def displayDateAndTime():
-    updateLCD(time.strftime(r"   %Y-%m-%d\n    %H:%M:%S"))
+    updateLCD(time.strftime(r"   %Y-%m-%d       %H:%M:%S"))
     time.sleep(0.5)
 
 def updateLCD(newString):
