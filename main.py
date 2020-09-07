@@ -107,7 +107,7 @@ def diskSpace():
 
 def writeToFile():
     with open("data.csv","a+") as f:
-        f.write("%0.3f,%0.3f,%0.1f,%0.1f,%s" % (temp,humidity,ppm25,ppm10, time.strftime("%Y-%m-%d %H:%M:%S")))
+        f.write("\r\n%0.3f,%0.3f,%0.1f,%0.1f,%s" % (temp,humidity,ppm25,ppm10, time.strftime("%Y-%m-%d %H:%M:%S")))
 
 def doPmReading():
     global ppm25

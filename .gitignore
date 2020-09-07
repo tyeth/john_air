@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 BLYNK.py
 Lc.py
+data.csv
 lcd_16x2.py
