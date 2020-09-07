@@ -37,9 +37,9 @@ import adafruit_si7021
 
 pin_TEMP    =0
 pin_HUMIDITY=1
-pin_ppm25   =3
-pin_ppm10   =4
-pin_aqi25   =5
+pin_ppm25   =2
+pin_ppm10   =3
+pin_aqi25   =4
 
 lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], numbering_mode=GPIO.BCM) 
 i2c=None
