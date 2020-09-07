@@ -160,7 +160,7 @@ def  calcAQIpm10(pm10):
     elif (pm10 > pm8) :
         aqipm10 = 500
     
-    return aqipm10.toFixed(0)
+    return format(aqipm10, ".2f") #.toFixed(0)
 
 
 
@@ -223,7 +223,7 @@ def calcAQIpm25(pm25):
     elif (pm25 > pm8):
         aqipm25 = 500
 
-    return aqipm25.toFixed(0)
+    return format(aqipm25, ".2f") #.toFixed(0)
 
 def doTemperatureHumidityReading():
     global temp
