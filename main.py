@@ -292,10 +292,10 @@ except Exception as e:
 
 
 while True:
+    displayDateAndTime()
     doPmReading()
     doTemperatureHumidityReading()
     buildStatusMessageAndDisplay()
     if(not blynk==None): blynk.run()
     time.sleep(2)
-    displayDateAndTime()
 
