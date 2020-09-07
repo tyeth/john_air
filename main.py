@@ -115,7 +115,7 @@ def doPmReading():
         print("Updating blynk with PPM 2.5...")
         updateBlynk(pin_ppm25, ppm25)
         print("Updating blynk with PPM 10...")
-        updateBlynk(pin_ppm25, ppm25)
+        updateBlynk(pin_ppm10, ppm10)
         print("Updating blynk with AQI 2.5...")
         updateBlynk(pin_aqi25, aqi25)
         print("Updating blynk with AQI 10...")
