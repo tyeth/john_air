@@ -74,8 +74,8 @@ def updateBlynk(virtualPin,updatedValue, attribute='color'):
 def buildStatusMessageAndDisplay():
     updateLCD("T: %0.1f H:%0.1f%% PPM2.5: %0.1f" % (temp,humidity,ppm25))
 
-def displayDateAndTime():
-    updateLCD(time.strftime(r"   %Y-%m-%d       %H:%M:%S"))
+def displayDateAndTime(formatTime=r"   %Y-%m-%d       %H:%M:%S"):
+    updateLCD(time.strftime(formatTime))
     time.sleep(0.5)
 
 def updateLCD(newString):
@@ -291,11 +291,11 @@ except Exception as e:
 
 
 while True:
-    displayDateAndTime()
+    displayDateAndTime(r"   %Y-%m-%d   TH< %H:%M:%S")
     doPmReading()
-    displayDateAndTime()
+    displayDateAndTime(r"   %Y-%m-%d       %H:%M:%S >PS")
     doTemperatureHumidityReading()
     buildStatusMessageAndDisplay()
     if(not blynk==None): blynk.run()
-    time.sleep(2)
+    time.sleep(5)
 
