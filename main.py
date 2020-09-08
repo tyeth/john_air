@@ -70,7 +70,8 @@ lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], 
 
 
 def log(msg):
-    if(Debug==None): return
+    if(not Debug):
+        return
     print(msg)
 
 
@@ -92,7 +93,7 @@ def diskSpace(): # called on boot + every 100 iterations
                      universal_newlines=True)
     stdout, stderr = process.communicate()
     disk_free = stdout.split('\n')[1].split()[3]
-    outString = "Free Space:%s\n%s" % (disk_free % getLastAptUpdate())
+    outString = "Free Space:%s\n%s" % (disk_free, getLastAptUpdate())
     updateLCD(outString)
     time.sleep(2)
 
