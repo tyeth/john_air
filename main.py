@@ -127,7 +127,7 @@ def setBrightness(val):
     gpioPWM.ChangeDutyCycle(val*100)
 
 def updateBrightnessByTime():
-    (y,m,d,hour,mins,sec,o) = time.localtime()
+    (y,m,d,hour,mins,sec, *o) = time.localtime()
     if(hour < 6):
         setBrightness(0.1)
     elif(hour < 8):
