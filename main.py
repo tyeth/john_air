@@ -85,7 +85,7 @@ def displayDateAndTime(formatTime=r"   %Y-%m-%d       %H:%M:%S"):
     time.sleep(0.5)
 
 def diskSpace(): # called on boot + every 100 iterations
-    setBrightness()
+    updateBrightnessByTime()
     process = subprocess.Popen(['df', '-h', '/'],
                      stdout=subprocess.PIPE, 
                      stderr=subprocess.PIPE,
