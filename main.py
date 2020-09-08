@@ -132,17 +132,17 @@ def setBrightness(val):
 def updateBrightnessByTime():
     (y,m,d,hour,mins,sec, *o) = time.localtime()
     if(hour < 6):
-        setBrightness(0.1)
+        setBrightness(1-0.1)
     elif(hour < 8):
-        setBrightness(0.2)
+        setBrightness(1-0.2)
     elif(hour < 10):
-        setBrightness(0.6)
+        setBrightness(1-0.6)
     elif(hour < 20):
-        setBrightness(1)
+        setBrightness(1-1)
     elif(hour < 22):
-        setBrightness(0.6)
+        setBrightness(1-0.6)
     else:
-        setBrightness(0.2)
+        setBrightness(1-0.2)
 
 def test():
     time.sleep(0.3)
