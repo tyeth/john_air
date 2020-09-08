@@ -42,12 +42,18 @@ pin_ppm10   =3
 pin_aqi25   =4
 pin_aqi10   =5
 
-lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], numbering_mode=GPIO.BCM) 
+pin_backlight=12 # PWM0
+# Debug !!!
+Debug=True
+
 i2c=None
 sensor=None
 currentValues=None
 lcdString=None
 blynk = None
+gpioPWM = None
+
+pwm_frequency = 100 # Hz
 ppm25=-1
 ppm10=-1
 temp=-99
@@ -56,21 +62,17 @@ humidity=-1
 BLYNK_AUTH = '6pCMihwTj9roRtnn-cxkYJkd23iFXr64'
 blynk = blynklib.Blynk(BLYNK_AUTH)
 blynk.run()
-def updateBlynk(virtualPin,updatedValue, attribute='color'):
-    global blynk
-    global BLYNK_AUTH
-    try:
-        if(blynk==None): blynk = blynklib.Blynk(BLYNK_AUTH)
-    except:
-        print("Failed to login to blynk, check auth key")
-        return
 
-    try:
-        print("Updating Blynk VPin:%s Attr:%s Value:%s" % (virtualPin,attribute,updatedValue))
-        blynk.virtual_write(virtualPin,updatedValue)
-        blynk.run()
-    except Exception as identifier:
-        print("Failed", identifier)
+# PWM pin setup
+GPIO.setup(pin_backlight, GPIO.OUT)
+
+lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], numbering_mode=GPIO.BCM) 
+
+
+def log(msg):
+    if(Debug==None): return
+    print(msg)
+
 
 def buildStatusMessageAndDisplay():
     global blynk
@@ -82,32 +84,82 @@ def displayDateAndTime(formatTime=r"   %Y-%m-%d       %H:%M:%S"):
     updateLCD(time.strftime(formatTime))
     time.sleep(0.5)
 
-def updateLCD(newString):
-    global lcdString
-    global lcd
-    print("UpdateLCD called with %s" % newString)
-    if(newString==lcdString):
-        return
-    print("Updating LCD from %s to %s" % (lcdString,newString))
-    lcdString = newString
-    lcd.clear()
-    lcd.write_string(lcdString)
-
-
-def diskSpace():
+def diskSpace(): # called on boot + every 100 iterations
+    setBrightness()
     process = subprocess.Popen(['df', '-h', '/'],
                      stdout=subprocess.PIPE, 
                      stderr=subprocess.PIPE,
                      universal_newlines=True)
     stdout, stderr = process.communicate()
     disk_free = stdout.split('\n')[1].split()[3]
-    outString = "Free Space:\n%s" % disk_free
+    outString = "Free Space:%s\n%s" % (disk_free % getLastAptUpdate())
     updateLCD(outString)
     time.sleep(2)
+
+def getLastAptUpdate():
+    #grep "apt upg" -n1 /var/log/apt/history.log | head -n1 | xargs | cut -f2-3 -d" "
+    process = subprocess.Popen(['/usr/bin/bash', '-c', 'grep "apt upg" -n1 /var/log/apt/history.log | head -n1 | xargs | cut -f2-3 -d" "'],
+                        stdout=subprocess.PIPE, 
+                        stderr=subprocess.PIPE,
+                        universal_newlines=True)
+    stdout, stderr = process.communicate()
+    val = stdout.split('\n')[0]
+    outString = "Upd:\n%s" % val
+    return outString
+
+def updateLCD(newString):
+    global lcdString
+    global lcd
+    log("UpdateLCD called with %s" % newString)
+    if(newString==lcdString):
+        return
+    log("Updating LCD from %s to %s" % (lcdString,newString))
+    lcdString = newString
+    lcd.clear()
+    lcd.write_string(lcdString)
+
+# 0 - 1  
+def setBrightness(val):
+    global gpioPWM
+    if(gpioPWM==None):
+        gpioPWM= GPIO.PWM(pin_backlight, pwm_frequency)
+        gpioPWM.start()
+    gpioPWM.ChangeDutyCycle(val*100)
+
+def updateBrightnessByTime():
+    (y,m,d,hour,mins,sec,o) = time.localtime()
+    if(hour < 6):
+        setBrightness(0.1)
+    elif(hour < 8):
+        setBrightness(0.2)
+    elif(hour < 10):
+        setBrightness(0.6)
+    elif(hour < 20):
+        setBrightness(1)
+    elif(hour < 22):
+        setBrightness(0.6)
+    else:
+        setBrightness(0.2)
 
 def writeToFile():
     with open("data.csv","a+") as f:
         f.write("\r\n%0.3f,%0.3f,%0.1f,%0.1f,%s" % (temp,humidity,ppm25,ppm10, time.strftime("%Y-%m-%d %H:%M:%S")))
+
+def updateBlynk(virtualPin,updatedValue, attribute='color'):
+    global blynk
+    global BLYNK_AUTH
+    try:
+        if(blynk==None): blynk = blynklib.Blynk(BLYNK_AUTH)
+    except:
+        log("Failed to login to blynk, check auth key")
+        return
+
+    try:
+        log("Updating Blynk VPin:%s Attr:%s Value:%s" % (virtualPin,attribute,updatedValue))
+        blynk.virtual_write(virtualPin,updatedValue)
+        blynk.run()
+    except Exception as identifier:
+        log("Failed", identifier)
 
 def doPmReading():
     global ppm25
@@ -116,31 +168,31 @@ def doPmReading():
     aqi25 = calcAQIpm25(ppm25)
     aqi10 = calcAQIpm10(ppm10)
     try:
-        print("Updating blynk with PPM 2.5...")
+        log("Updating blynk with PPM 2.5...")
         updateBlynk(pin_ppm25, ppm25)
-        print("Updating blynk with PPM 10...")
+        log("Updating blynk with PPM 10...")
         updateBlynk(pin_ppm10, ppm10)
-        print("Updating blynk with AQI 2.5...")
+        log("Updating blynk with AQI 2.5...")
         updateBlynk(pin_aqi25, aqi25)
-        print("Updating blynk with AQI 10...")
+        log("Updating blynk with AQI 10...")
         updateBlynk(pin_aqi10, aqi10)
     except Exception as e:
-        print("failed to update blynk with ppm")
-        print(e)
+        log("failed to update blynk with ppm")
+        log(e)
 
 def doTemperatureHumidityReading():
     global temp
     global humidity
     global sensor
     if(sensor==None):
-        print("No Temp/Humidity Sensor!")
+        log("No Temp/Humidity Sensor!")
         return -1
     time.sleep(1)
     temp=sensor.temperature
-    print("Temperature: %0.1f C" % temp)
+    log("Temperature: %0.1f C" % temp)
     humidity=sensor.relative_humidity
-    print("Humidity: %0.1f %%" % humidity)
-    print("Updating blynk with temperature & humidity")
+    log("Humidity: %0.1f %%" % humidity)
+    log("Updating blynk with temperature & humidity")
     updateBlynk(pin_TEMP,temp)
     updateBlynk(pin_HUMIDITY,humidity)
 
@@ -248,26 +300,26 @@ def calcAQIpm25(pm25):
 diskSpace()
 displayDateAndTime()
 try:
-    print("Loading Si7021 Temp/Humidity Sensor")
+    log("Loading Si7021 Temp/Humidity Sensor")
     # Create library object using our Bus I2C port
     i2c = busio.I2C(board.SCL, board.SDA)
     sensor = adafruit_si7021.SI7021(i2c)
 
-    print("Found Si7021 sensor, reading data...")
+    log("Found Si7021 sensor, reading data...")
     doTemperatureHumidityReading()
 except Exception as e:
-    print("failed to load si7021")
-    print(e)
+    log("failed to load si7021")
+    log(e)
 
 reset_pin = None
 
 try:
-    print("Now PPM2.5 sensor, reading data...")
+    log("Now PPM2.5 sensor, reading data...")
     doPmReading()
 except Exception as e:
-    print("PM Sensor error", e)
+    log("PM Sensor error", e)
 
-
+counter=100
 while True:
     displayDateAndTime(r"   %Y-%m-%d   TH< %H:%M:%S")
     doPmReading()
@@ -276,5 +328,9 @@ while True:
     buildStatusMessageAndDisplay()
     writeToFile()
     if(not blynk==None): blynk.run()
-    time.sleep(5)
-
+    time.sleep(3)
+    counter = counter - 1
+    if (counter==0):
+        diskSpace()
+    else:
+        time.sleep(2)

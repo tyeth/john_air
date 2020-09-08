@@ -22,7 +22,7 @@ MQTT_HOST = ''
 MQTT_TOPIC = '/weather/particulatematter'
 
 ser = serial.Serial()
-ser.port = "/dev/ttyUSB0"
+ser.port = "/dev/ttyUSB0" # "COM6"
 ser.baudrate = 9600
 
 
@@ -84,7 +84,7 @@ def cmd_query_data():
     ser.write(construct_command(CMD_QUERY_DATA))
     d = read_response()
     values = []
-    if d[1] == 192:# b"\xc0":
+    if d[1] == 192: # b"\xc0":
         values = process_data(d)
     return values
 
