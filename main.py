@@ -123,7 +123,7 @@ def setBrightness(val):
     global gpioPWM
     if(gpioPWM==None):
         gpioPWM= GPIO.PWM(pin_backlight, pwm_frequency)
-        gpioPWM.start()
+        gpioPWM.start(0)
     gpioPWM.ChangeDutyCycle(val*100)
 
 def updateBrightnessByTime():
