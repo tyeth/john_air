@@ -106,7 +106,7 @@ def getLastAptUpdate():
                         universal_newlines=True)
     stdout, stderr = process.communicate()
     val = stdout.split('\n')[0]
-    outString = "Upd:\n%s" % val
+    outString = "Upd:%s" % val
     return outString
 
 def updateLCD(newString):
@@ -145,19 +145,19 @@ def updateBrightnessByTime():
         setBrightness(1-0.2)
 
 def test():
-    time.sleep(0.3)
+    time.sleep(0.1)
     setBrightness(0.1)
-    time.sleep(0.3)
+    time.sleep(0.1)
     setBrightness(0.2)
-    time.sleep(0.3)
+    time.sleep(0.1)
     setBrightness(0.6)
-    time.sleep(0.3)
+    time.sleep(0.1)
     setBrightness(1)
-    time.sleep(0.3)
+    time.sleep(0.1)
     setBrightness(0.6)
-    time.sleep(0.3)
+    time.sleep(0.1)
     setBrightness(0.2)
-    time.sleep(0.3)
+    time.sleep(0.1)
     
 
 def writeToFile():
