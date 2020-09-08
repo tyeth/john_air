@@ -98,7 +98,7 @@ def diskSpace(): # called on boot + every 100 iterations
 
 def getLastAptUpdate():
     #grep "apt upg" -n1 /var/log/apt/history.log | head -n1 | xargs | cut -f2-3 -d" "
-    process = subprocess.Popen(['/usr/bin/bash', '-c', 'grep "apt upg" -n1 /var/log/apt/history.log | head -n1 | xargs | cut -f2-3 -d" "'],
+    process = subprocess.Popen(['/bin/bash', '-c', 'grep "apt upg" -n1 /var/log/apt/history.log | head -n1 | xargs | cut -f2-3 -d" "'],
                         stdout=subprocess.PIPE, 
                         stderr=subprocess.PIPE,
                         universal_newlines=True)
@@ -120,6 +120,7 @@ def updateLCD(newString):
 
 # 0 - 1  
 def setBrightness(val):
+    #https://sourceforge.net/p/raspberry-gpio-python/wiki/PWM/
     global gpioPWM
     if(gpioPWM==None):
         gpioPWM= GPIO.PWM(pin_backlight, pwm_frequency)
