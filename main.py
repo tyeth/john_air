@@ -69,6 +69,7 @@ GPIO.setup(pin_backlight, GPIO.OUT)
 lcd = CharLCD(cols=16, rows=2, pin_rs=14, pin_e=15, pins_data=[18, 23, 24, 25], numbering_mode=GPIO.BCM) 
 
 
+
 def log(msg):
     if(not Debug):
         return
@@ -142,6 +143,22 @@ def updateBrightnessByTime():
         setBrightness(0.6)
     else:
         setBrightness(0.2)
+
+def test():
+    time.sleep(0.3)
+    setBrightness(0.1)
+    time.sleep(0.3)
+    setBrightness(0.2)
+    time.sleep(0.3)
+    setBrightness(0.6)
+    time.sleep(0.3)
+    setBrightness(1)
+    time.sleep(0.3)
+    setBrightness(0.6)
+    time.sleep(0.3)
+    setBrightness(0.2)
+    time.sleep(0.3)
+    
 
 def writeToFile():
     with open("data.csv","a+") as f:
@@ -299,6 +316,8 @@ def calcAQIpm25(pm25):
 
     return format(aqipm25, ".2f") #.toFixed(0)
 
+
+test()
 diskSpace()
 displayDateAndTime()
 try:
