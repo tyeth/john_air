@@ -106,7 +106,7 @@ def getLastAptUpdate():
                         universal_newlines=True)
     stdout, stderr = process.communicate()
     val = stdout.split('\n')[0]
-    outString = "Upd:%s" % val
+    outString = "U:%s" % val
     return outString
 
 def updateLCD(newString):
@@ -122,6 +122,7 @@ def updateLCD(newString):
 
 # 0 - 1  
 def setBrightness(val):
+    # Using pnp BC557 to sink the cathode so inverted values hence 1-x
     #https://sourceforge.net/p/raspberry-gpio-python/wiki/PWM/
     global gpioPWM
     if(gpioPWM==None):
@@ -129,7 +130,8 @@ def setBrightness(val):
         gpioPWM.start(0)
     gpioPWM.ChangeDutyCycle(val*100)
 
-def updateBrightnessByTime():
+def updateBrightnessByTime():    
+    # Using pnp BC557 to sink the cathode so inverted values hence 1-x
     (y,m,d,hour,mins,sec, *o) = time.localtime()
     if(hour < 6):
         setBrightness(1-0.1)
@@ -144,7 +146,7 @@ def updateBrightnessByTime():
     else:
         setBrightness(1-0.2)
 
-def test():
+def backlightTest():
     time.sleep(0.1)
     setBrightness(0.1)
     time.sleep(0.1)
@@ -317,7 +319,7 @@ def calcAQIpm25(pm25):
     return format(aqipm25, ".2f") #.toFixed(0)
 
 
-test()
+backlightTest()
 diskSpace()
 displayDateAndTime()
 try:
