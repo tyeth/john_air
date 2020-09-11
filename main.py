@@ -94,7 +94,7 @@ def diskSpace(): # called on boot + every 100 iterations
                      universal_newlines=True)
     stdout, stderr = process.communicate()
     disk_free = stdout.split('\n')[1].split()[3]
-    outString = "Free Space:%s %s" % (disk_free, getLastAptUpdate())
+    outString = "Space:%s %s" % (disk_free, getLastAptUpdate())
     updateLCD(outString)
     time.sleep(2)
 
