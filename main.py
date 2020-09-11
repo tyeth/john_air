@@ -54,6 +54,7 @@ blynk = None
 gpioPWM = None
 
 pwm_frequency = 480 # Hz
+diskSpaceDisplayedEveryXxxCycles = 5
 ppm25=-1
 ppm10=-1
 temp=-99
@@ -342,7 +343,7 @@ try:
 except Exception as e:
     log("PM Sensor error", e)
 
-counter=100
+counter=diskSpaceDisplayedEveryXxxCycles
 while True:
     displayDateAndTime(r"   %Y-%m-%d   TH< %H:%M:%S")
     doPmReading()
@@ -355,5 +356,6 @@ while True:
     counter = counter - 1
     if (counter==0):
         diskSpace()
+        counter = diskSpaceDisplayedEveryXxxCycles
     else:
         time.sleep(2)
