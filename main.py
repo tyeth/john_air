@@ -53,7 +53,7 @@ lcdString=None
 blynk = None
 gpioPWM = None
 
-pwm_frequency = 100 # Hz
+pwm_frequency = 480 # Hz
 ppm25=-1
 ppm10=-1
 temp=-99
@@ -136,9 +136,9 @@ def updateBrightnessByTime():
     if(hour < 6):
         setBrightness(1-0.1)
     elif(hour < 8):
-        setBrightness(1-0.2)
+        setBrightness(1-0.4)
     elif(hour < 10):
-        setBrightness(1-0.6)
+        setBrightness(1-0.7)
     elif(hour < 20):
         setBrightness(1-1)
     elif(hour < 22):
