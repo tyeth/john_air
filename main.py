@@ -356,6 +356,7 @@ while True:
     counter = counter - 1
     if (counter==0):
         diskSpace()
+        time.sleep(1)
         counter = diskSpaceDisplayedEveryXxxCycles
     else:
-        time.sleep(2)
+        time.sleep(3)
