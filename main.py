@@ -83,11 +83,11 @@ def buildStatusMessageAndDisplay():
     # WAS USED FOR CONNECTED INFO STAUS ICON if(not blynk==None):
     formatString = "T: %0.1f" + chr(223) + "C H:%d%% PPM2.5: %0.1f" # + chr(165)
     #Update to do one page of t+h, ppm2.5+aqi, ppm10+aqi
-    updateLCD("Temperature %0.2f\nHumidity %0.2f" % (temp,humidity))
+    updateLCD("Temperature %0.2fHumidity %0.2f" % (temp,humidity))
     time.sleep(1.5)
-    updateLCD("PPM 2.5: %0.1f\nAQI: %s" % (ppm25,getAqiStatus(calcAQIpm25(ppm25))))
+    updateLCD("PPM 2.5: %0.1fAQI: %s" % (ppm25,getAqiStatus(calcAQIpm25(ppm25))))
     time.sleep(1.5)
-    updateLCD("PPM 10: %0.1f\nAQI: %s" % (ppm10,getAqiStatus(calcAQIpm10(ppm10))))
+    updateLCD("PPM 10: %0.1fAQI: %s" % (ppm10,getAqiStatus(calcAQIpm10(ppm10))))
     time.sleep(1.5)
     updateLCD(formatString % (temp,humidity,ppm25))
 
@@ -273,17 +273,17 @@ def  calcAQIpm10(pm10):
 
 def getColor(aqi) :
     color=None
-    if (aqi < 50):
+    if (+aqi < 50):
         color = "Lime"
-    elif (aqi >= 50 and aqi < 100):
+    elif (+aqi >= 50 and aqi < 100):
         color = "yellow"
-    elif (aqi >= 100 and aqi < 150):
+    elif (+aqi >= 100 and aqi < 150):
         color = "orange"
-    elif (aqi >= 150 and aqi < 200):
+    elif (+aqi >= 150 and aqi < 200):
         color = "red"
-    elif (aqi >= 200 and aqi < 300):
+    elif (+aqi >= 200 and aqi < 300):
         color = "purple"
-    elif (aqi >= 300):
+    elif (+aqi >= 300):
         color = "rgb(126,0,35)" #/* was brown, should be maroon, rgb(126,0,35) */
     else:
         color = "black"
@@ -292,15 +292,15 @@ def getColor(aqi) :
 
 def getAqiStatus(aqi) :
     status=None
-    if (aqi < 50):
+    if (+aqi < 50):
         status = "Good"
-    elif (aqi >= 50 and aqi < 100):
+    elif (+aqi >= 50 and aqi < 100):
         status = "Moderate"
-    elif (aqi >= 100 and aqi < 150):
+    elif (+aqi >= 100 and aqi < 150):
         status = "Sensitive"
-    elif (aqi >= 150 and aqi < 200):
+    elif (+aqi >= 150 and aqi < 200):
         status = "Unhealthy"
-    elif (aqi >= 200 and aqi < 300):
+    elif (+aqi >= 200 and aqi < 300):
         status = "Very Unhealthy"
     #elif (aqi >= 300):
     else:
