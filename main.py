@@ -272,7 +272,7 @@ def  calcAQIpm10(pm10):
     # https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf 
 
 def getColor(stringAQI) :
-    aqi=int(stringAQI)
+    aqi=float(stringAQI)
     color=None
     if (aqi < 50):
         color = "Lime"
@@ -292,7 +292,7 @@ def getColor(stringAQI) :
     return {"bg": color, "text": "white" if (aqi > 200) else "black"} 
 
 def getAqiStatus(stringAQI) :
-    aqi=int(stringAQI)
+    aqi=float(stringAQI)
     status=None
     if (aqi < 50):
         status = "Good"
