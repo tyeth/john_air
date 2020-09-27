@@ -86,9 +86,9 @@ def buildStatusMessageAndDisplay():
     updateLCD("Temperature %0.1f Humidity %0.2f" % (temp,humidity))
     time.sleep(1.5)
     updateLCD("PPM 2.5: %0.1f %s" % (ppm25,getAqiStatus(calcAQIpm25(ppm25))))
-    time.sleep(1.5)
+    time.sleep(2)
     updateLCD("PPM 10: %0.1f %s" % (ppm10,getAqiStatus(calcAQIpm10(ppm10))))
-    time.sleep(1.5)
+    time.sleep(2)
     updateLCD(formatString % (temp,humidity,ppm25))
 
 
