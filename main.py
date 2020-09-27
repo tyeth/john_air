@@ -271,36 +271,38 @@ def  calcAQIpm10(pm10):
 
     # https://www.airnow.gov/sites/default/files/2020-05/aqi-technical-assistance-document-sept2018.pdf 
 
-def getColor(aqi) :
+def getColor(stringAQI) :
+    aqi=int(stringAQI)
     color=None
-    if (+aqi < 50):
+    if (aqi < 50):
         color = "Lime"
-    elif (+aqi >= 50 and aqi < 100):
+    elif (aqi >= 50 and aqi < 100):
         color = "yellow"
-    elif (+aqi >= 100 and aqi < 150):
+    elif (aqi >= 100 and aqi < 150):
         color = "orange"
-    elif (+aqi >= 150 and aqi < 200):
+    elif (aqi >= 150 and aqi < 200):
         color = "red"
-    elif (+aqi >= 200 and aqi < 300):
+    elif (aqi >= 200 and aqi < 300):
         color = "purple"
-    elif (+aqi >= 300):
+    elif (aqi >= 300):
         color = "rgb(126,0,35)" #/* was brown, should be maroon, rgb(126,0,35) */
     else:
         color = "black"
     
     return {"bg": color, "text": "white" if (aqi > 200) else "black"} 
 
-def getAqiStatus(aqi) :
+def getAqiStatus(stringAQI) :
+    aqi=int(stringAQI)
     status=None
-    if (+aqi < 50):
+    if (aqi < 50):
         status = "Good"
-    elif (+aqi >= 50 and aqi < 100):
+    elif (aqi >= 50 and aqi < 100):
         status = "Moderate"
-    elif (+aqi >= 100 and aqi < 150):
+    elif (aqi >= 100 and aqi < 150):
         status = "Sensitive"
-    elif (+aqi >= 150 and aqi < 200):
+    elif (aqi >= 150 and aqi < 200):
         status = "Unhealthy"
-    elif (+aqi >= 200 and aqi < 300):
+    elif (aqi >= 200 and aqi < 300):
         status = "Very Unhealthy"
     #elif (aqi >= 300):
     else:
