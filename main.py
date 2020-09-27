@@ -83,11 +83,11 @@ def buildStatusMessageAndDisplay():
     # WAS USED FOR CONNECTED INFO STAUS ICON if(not blynk==None):
     formatString = "T: %0.1f" + chr(223) + "C H:%d%% PPM2.5: %0.1f" # + chr(165)
     #Update to do one page of t+h, ppm2.5+aqi, ppm10+aqi
-    updateLCD("Temperature %0.2fHumidity %0.2f" % (temp,humidity))
+    updateLCD("Temperature %0.1f Humidity %0.2f" % (temp,humidity))
     time.sleep(1.5)
-    updateLCD("PPM 2.5: %0.1fAQI: %s" % (ppm25,getAqiStatus(calcAQIpm25(ppm25))))
+    updateLCD("PPM 2.5: %0.1f\n%s" % (ppm25,getAqiStatus(calcAQIpm25(ppm25))))
     time.sleep(1.5)
-    updateLCD("PPM 10: %0.1fAQI: %s" % (ppm10,getAqiStatus(calcAQIpm10(ppm10))))
+    updateLCD("PPM 10: %0.1f\n%s" % (ppm10,getAqiStatus(calcAQIpm10(ppm10))))
     time.sleep(1.5)
     updateLCD(formatString % (temp,humidity,ppm25))
 
